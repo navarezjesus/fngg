@@ -1,9 +1,11 @@
 const puppeteer = require('puppeteer');
 
 (async () => {
+  console.log("Launching browser...");
+
   const browser = await puppeteer.launch({
-    executablePath: '/snap/bin/chromium',  // Add this line
-    headless: true,  // or false if you want to see the browser
+    executablePath: '/snap/bin/chromium',
+    headless: true,  // set to false if you want to see the browser UI
   });
 
   const page = await browser.newPage();
@@ -15,14 +17,15 @@ const puppeteer = require('puppeteer');
     Object.defineProperty(navigator, 'webdriver', { get: () => false });
   });
 
+  console.log("Navigating to the page...");
   await page.goto('https://fortnite.gg/creative?creator=jelty', { waitUntil: 'networkidle2', timeout: 0 });
 
   try {
-    // Wait for the PLAYER COUNT button and click it
+    console.log("Waiting for PLAYER COUNT button...");
     await page.waitForSelector('.accordion-header.chart-week-multi-header', { timeout: 15000 });
     await page.click('.accordion-header.chart-week-multi-header');
 
-    // Wait for the table to load
+    console.log("Waiting for the table to load...");
     await page.waitForSelector('#chart-month-table tbody tr', { timeout: 15000 });
     console.log('✅ Table loaded.');
 
