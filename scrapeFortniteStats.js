@@ -4,8 +4,9 @@ const puppeteer = require('puppeteer');
   console.log("Launching browser...");
 
   const browser = await puppeteer.launch({
-    executablePath: '/snap/bin/chromium',
-    headless: true,  // set to false if you want to see the browser UI
+    executablePath: '/snap/bin/chromium', // Path to Chromium
+    headless: true, // or false if you want to see the browser UI
+    args: ['--no-sandbox'], // Add this line
   });
 
   const page = await browser.newPage();
@@ -27,7 +28,7 @@ const puppeteer = require('puppeteer');
 
     console.log("Waiting for the table to load...");
     await page.waitForSelector('#chart-month-table tbody tr', { timeout: 15000 });
-    console.log('✅ Table loaded.');
+    console.log("✅ Table loaded.");
 
     const tableData = await page.evaluate(() => {
       const rows = Array.from(document.querySelectorAll('#chart-month-table tbody tr'));
@@ -37,7 +38,7 @@ const puppeteer = require('puppeteer');
       });
     });
 
-    console.log('📊 Extracted Data:\n', tableData);
+    console.log("📊 Extracted Data:\n", tableData);
   } catch (err) {
     console.log('❌ Failed:', err.message);
   }
