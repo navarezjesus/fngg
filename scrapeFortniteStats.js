@@ -2,12 +2,10 @@ const puppeteer = require('puppeteer');
 
 (async () => {
   const browser = await puppeteer.launch({
-    headless: 'new',
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-blink-features=AutomationControlled',
-      '--window-size=1920,1080'
+  executablePath: '/snap/bin/chromium',  // Add this line
+  headless: true,  // or false if you want to see the browser
+});
+
     ]
   });
 
