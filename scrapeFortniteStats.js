@@ -2,11 +2,10 @@ const puppeteer = require('puppeteer');
 
 (async () => {
   console.log("Launching browser...");
-
   const browser = await puppeteer.launch({
-    executablePath: '/snap/bin/chromium', // Path to Chromium
-    headless: true, // or false if you want to see the browser UI
-    args: ['--no-sandbox'], // Add this line
+    executablePath: '/snap/bin/chromium',  // Path to Chromium
+    headless: false,  // Set to false if you want to see the browser
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Avoid sandboxing issues with root user
   });
 
   const page = await browser.newPage();
@@ -19,16 +18,22 @@ const puppeteer = require('puppeteer');
   });
 
   console.log("Navigating to the page...");
-  await page.goto('https://fortnite.gg/creative?creator=jelty', { waitUntil: 'networkidle2', timeout: 0 });
+  await page.goto('https://fortnite.gg/creative?creator=jelty', {
+    waitUntil: 'networkidle2',
+    timeout: 0,  // Disable timeout for page load
+  });
+
+  console.log("Page loaded successfully!");
 
   try {
-    console.log("Waiting for PLAYER COUNT button...");
+    console.log("Waiting for the PLAYER COUNT button...");
     await page.waitForSelector('.accordion-header.chart-week-multi-header', { timeout: 15000 });
+    console.log("Clicking PLAYER COUNT button...");
     await page.click('.accordion-header.chart-week-multi-header');
 
     console.log("Waiting for the table to load...");
     await page.waitForSelector('#chart-month-table tbody tr', { timeout: 15000 });
-    console.log("✅ Table loaded.");
+    console.log('✅ Table loaded.');
 
     const tableData = await page.evaluate(() => {
       const rows = Array.from(document.querySelectorAll('#chart-month-table tbody tr'));
@@ -38,10 +43,11 @@ const puppeteer = require('puppeteer');
       });
     });
 
-    console.log("📊 Extracted Data:\n", tableData);
+    console.log('📊 Extracted Data:\n', tableData);
   } catch (err) {
     console.log('❌ Failed:', err.message);
   }
 
+  console.log("Closing browser...");
   await browser.close();
 })();
