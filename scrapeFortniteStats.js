@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer');
   console.log("Launching browser...");
   const browser = await puppeteer.launch({
     executablePath: '/snap/bin/chromium',  // Path to Chromium
-    headless: false,  // Set to false if you want to see the browser
+    headless: true,  // Run in headless mode
     args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Avoid sandboxing issues with root user
   });
 
