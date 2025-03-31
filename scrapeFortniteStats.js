@@ -3,9 +3,13 @@ const puppeteer = require('puppeteer');
 (async () => {
   console.log("Launching browser...");
   const browser = await puppeteer.launch({
-    executablePath: '/snap/bin/chromium',  // Path to Chromium
-    headless: true,  // Run in headless mode
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Avoid sandboxing issues with root user
+    headless: 'new',  // Use new headless mode
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-blink-features=AutomationControlled',
+      '--window-size=1920,1080'
+    ]
   });
 
   const page = await browser.newPage();
