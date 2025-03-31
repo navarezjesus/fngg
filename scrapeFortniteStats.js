@@ -2,11 +2,8 @@ const puppeteer = require('puppeteer');
 
 (async () => {
   const browser = await puppeteer.launch({
-  executablePath: '/snap/bin/chromium',  // Add this line
-  headless: true,  // or false if you want to see the browser
-});
-
-    ]
+    executablePath: '/snap/bin/chromium',  // Add this line
+    headless: true,  // or false if you want to see the browser
   });
 
   const page = await browser.newPage();
