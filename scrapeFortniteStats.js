@@ -11,6 +11,7 @@ const puppeteer = require('puppeteer');
   let browser; // Declare browser outside try block for finally
   try {
     browser = await puppeteer.launch({
+      product: 'firefox',
       headless: 'new',
       // Increase protocol timeout (e.g., to 60 seconds) for slower servers
       protocolTimeout: 60000,
